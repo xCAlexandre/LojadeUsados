@@ -1,0 +1,75 @@
+﻿@page  "/TS/EditarProduto"
+@page "/TS/EditarProduto/{Produto}"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>EditarProduto</h3>
+
+<div class="card m-3">
+    <h4 class="card-header">Cadastro do Produto</h4>
+    <div class="card-body">
+        <EditForm Model="@produto" OnValidSubmit="Validacao" @onreset="Reset">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Id</label>
+                    <InputNumber @bind-Value="produto.Id" class="form-control" />
+                    <ValidationMessage For="@(() => produto.Id)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nome</label>
+                    <InputText @bind-Value="produto.Nome" class="form-control" />
+                    <ValidationMessage For="@(() => produto.Nome)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Preço</label>
+                    <InputNumber @bind-Value="produto.Preco" @bind-Value:format="F2" class="form-control" />
+                    <ValidationMessage For="@(() => produto.Preco)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Descrição</label>
+                    <InputText @bind-Value="produto.Descricao" class="form-control" />
+                    <ValidationMessage For="@(() => produto.Descricao)" />
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Produto produto = new Produto();
+
+    [Parameter]
+    public string Produto { get; set; }
+    private EditContext editContext { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var produtoId = Produto;
+        produto = await Http.GetFromJsonAsync<Produto>($"/Produto/PegaId?id={produtoId}"); //recebe um produto pelo Id enviado do controller que busca no db
+    }
+
+    private async Task Validacao()
+    {
+        var p1 = await Http.PostAsJsonAsync("/Produto/Criar", produto); //manda para o controller criar um produto por um  Json Async
+        NavigationManager.NavigateTo("TS/ListarProduto"); // Navega até o endereco forçando o navegador a dar reload
+    }
+
+    private void Reset()
+    {
+        produto = new Produto();
+        editContext = new EditContext(produto); //assim a validação nao é atualizada
+    }
+
+}
