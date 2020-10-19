@@ -1,0 +1,52 @@
+﻿@page "/TS/Tag/CriarTag"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Cadastro das Tags</h4>
+    <div class="card-body">
+        <EditForm Model="@tag" OnValidSubmit="ValidacaoTAG" @onreset="Reset">
+            @*<DataAnnotationsValidator />*@
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Id</label>
+                    <InputNumber @bind-Value="tag.TagId" class="form-control" />
+                    @*<ValidationMessage For="@(() => tag.TagId)" />*@
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nome</label>
+                    <InputText @bind-Value="tag.Nome" class="form-control" />
+                    @*<ValidationMessage For="@(() => tag.Nome)" />*@
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+
+            </div>
+        </div>
+
+        @code {
+            private Tag tag = new Tag();
+            private EditContext editContext { get; set; }
+
+
+            private async Task ValidacaoTAG()
+            {
+                var t1 = await Http.PostAsJsonAsync("/Tag/CriarTAG", tag); //manda para o controller criar uma tag por um  Json Async
+                Console.WriteLine("Passou!");
+                NavigationManager.NavigateTo("TS/Tag/ListarTag"); // Navega até o endereco forçando o navegador a dar reload
+            }
+
+            private void Reset()
+            {
+                tag = new Tag();
+                editContext = new EditContext(tag); //assim a validação nao é atualizada
+            }
+
+        }
