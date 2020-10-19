@@ -59,7 +59,7 @@ namespace ProjetoTS.Server.Controllers
         }
 
         [HttpGet]
-        [Route("PegaId")]
+        [Route("PegaId")] //pega um produto pelo id
         public async Task<IActionResult> Get([FromQuery] string id)
         {
             var produto = await db.Produtos.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));

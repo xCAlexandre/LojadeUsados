@@ -2,7 +2,7 @@
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
-
+ 
 <h3>CadastroProduto</h3>
 <div class="card m-3">
     <h4 class="card-header">Cadastro do Produto</h4>
@@ -37,6 +37,27 @@
                     <ValidationMessage For="@(() => produto.Descricao)" />
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Tags</label>
+                    @*
+        <Dropdown>
+            <DropdownToggle Color="Color.Primary">
+                ...
+            </DropdownToggle>
+            <DropdownMenu>
+                @foreach (var tag in TagList)
+                {
+                    <DropdownItem>@tag.Nome</DropdownItem>
+                    <DropdownDivider />
+                }
+            </DropdownMenu>
+        </Dropdown>
+                    *@
+                    
+
+                </div>
+            </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary mr-1">Salvar</button>
                 <button type="reset" class="btn btn-secondary">Cancel</button>
@@ -49,7 +70,7 @@
 @code {
     private Produto produto = new Produto();
     private EditContext editContext { get; set; }
-
+    
     private async Task Validacao()
     {
         var p1 = await Http.PostAsJsonAsync("/Produto/Criar", produto); //manda para o controller criar um produto por um  Json Async
@@ -61,5 +82,8 @@
         produto = new Produto();
         editContext = new EditContext(produto); //assim a validação nao é atualizada
     }
+
+
+
 
 }

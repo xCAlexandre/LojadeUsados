@@ -1,0 +1,28 @@
+﻿@page "/TS/ListarTag"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>ListarTag</h3>
+@foreach (var tag in TagList)
+{
+    <tr>
+        <td>@tag.Nome</td>
+
+    </tr>
+}
+
+@code {
+    private List<Tag> TagList = new List<Tag>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/Listar");
+        foreach (var item in tags)
+        {
+            TagList.Add(item);
+
+        }
+    }
+
+}

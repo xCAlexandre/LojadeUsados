@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 
-namespace ProjetoTS.Shared
+namespace ProjetoTS.Shared //CADA PRODUTO PODERA ESTAR LIGADO À VARIAS TAGS
 {
     public class Produto
     {
@@ -22,5 +22,7 @@ namespace ProjetoTS.Shared
         public int IdSetor { get; set; }// o produto terá que ter uma categoria definida
         
         public Setor Setor { get; set; }
+
+        public List<TagProduto> TagProduto { get; set; }//lista de tags que o produto vai ter
     }
 }
