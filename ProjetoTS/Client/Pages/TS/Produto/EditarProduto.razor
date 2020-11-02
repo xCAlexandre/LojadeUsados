@@ -15,28 +15,21 @@
                 <div class="form-group col">
                     <label>Id</label>
                     <InputNumber @bind-Value="produto.Id" class="form-control" />
-                    <ValidationMessage For="@(() => produto.Id)" />
+                    
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label>Nome</label>
                     <InputText @bind-Value="produto.Nome" class="form-control" />
-                    <ValidationMessage For="@(() => produto.Nome)" />
+                    
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label>Preço</label>
                     <InputNumber @bind-Value="produto.Preco" @bind-Value:format="F2" class="form-control" />
-                    <ValidationMessage For="@(() => produto.Preco)" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>Descrição</label>
-                    <InputText @bind-Value="produto.Descricao" class="form-control" />
-                    <ValidationMessage For="@(() => produto.Descricao)" />
+                   
                 </div>
             </div>
             <div class="text-center">
@@ -62,7 +55,7 @@
 
     private async Task Validacao()
     {
-        var p1 = await Http.PostAsJsonAsync("/Produto/Criar", produto); //manda para o controller criar um produto por um  Json Async
+        await Http.PutAsJsonAsync("/Produto/Atualizar", produto); //manda para o controller criar um produto por um  Json Async
         NavigationManager.NavigateTo("TS/Produto/ListarProduto"); // Navega até o endereco forçando o navegador a dar reload
     }
 

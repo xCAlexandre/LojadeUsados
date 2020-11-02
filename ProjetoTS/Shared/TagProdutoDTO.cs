@@ -7,10 +7,10 @@ using System.Text;
 
 namespace ProjetoTS.Shared
 {
-    public class TagProduto
+    public class TagProdutoDTO
     {
-        public int Id { get; set; }//id do produto
-        public int TagId { get; set; }
+        public string Id { get; set; }//id do produto
+        public string TagId { get; set; }
         public Tag tag { get; set; }
         public Produto produto { get; set; }
 

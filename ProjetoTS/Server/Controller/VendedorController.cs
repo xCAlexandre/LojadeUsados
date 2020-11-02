@@ -5,34 +5,36 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjetoTS.Shared;
 using ProjetoTS.Server;
+using ProjetoTS.Shared;
 
 namespace ProjetoTS.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TagController : Controller
+    public class VendedorController : Controller
     {
         private readonly ApplicationDBContext db;
-        public TagController(ApplicationDBContext db)//injeção de dependencia
+
+        public VendedorController(ApplicationDBContext db)//injeção de dependencia
         {
             this.db = db;
         }
 
         [HttpPost]
-        [Route("CriarTAG")]
-        public async Task<ActionResult> Post([FromBody] Tag tag)//recebe uma tag do body do Http e não do header
+        [Route("CVendedor")]
+        public async Task<ActionResult> Post([FromBody] VendedorDTO vendedor)//recebe um produto do body do Http e não do header
         {
-           
             try
             {
-                var newTag = new Tag
+                var newVendedor = new Vendedor
                 {
-                    TagId = tag.TagId,
-                    Nome = tag.Nome
+                    IdVendedor=Convert.ToInt32(vendedor.IdVendedor),
+                    Nome=vendedor.Nome,
+                    Endereco=vendedor.Endereco,
+                    Produto=vendedor.Produto
                 };
-                db.Add(newTag);
+                db.Add(newVendedor);
                 await db.SaveChangesAsync();//insere na tabela
                 return Ok();
 
@@ -43,14 +45,14 @@ namespace ProjetoTS.Server.Controllers
             }
         }
 
+       
         [HttpGet]
-        [Route("ListarTAG")]
+        [Route("ListVendedores")]
         public async Task<IActionResult> Get() //o tipo de retorno dessa ação
         {
-            var tags = await db.Tags.ToListAsync();//resulta em uma Lista de Tags
-            return Ok(tags);
+            var vendedores = await db.Vendedores.ToListAsync();//resulta em uma Lista de Produtos
+            return Ok(vendedores);
         }
-
-
+        
     }
 }

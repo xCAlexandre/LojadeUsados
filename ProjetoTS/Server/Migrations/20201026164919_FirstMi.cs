@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjetoTS.Server.Migrations
 {
-    public partial class Primeiro : Migration
+    public partial class FirstMi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -37,23 +37,23 @@ namespace ProjetoTS.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TagProduto",
+                name: "TagProdutos",
                 columns: table => new
                 {
-                    TagId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false),
+                    TagId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TagProduto", x => new { x.TagId, x.Id });
+                    table.PrimaryKey("PK_TagProdutos", x => new { x.TagId, x.Id });
                     table.ForeignKey(
-                        name: "FK_TagProduto_Produtos_Id",
+                        name: "FK_TagProdutos_Produtos_Id",
                         column: x => x.Id,
                         principalTable: "Produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TagProduto_Tags_TagId",
+                        name: "FK_TagProdutos_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "TagId",
@@ -61,15 +61,15 @@ namespace ProjetoTS.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TagProduto_Id",
-                table: "TagProduto",
+                name: "IX_TagProdutos_Id",
+                table: "TagProdutos",
                 column: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TagProduto");
+                name: "TagProdutos");
 
             migrationBuilder.DropTable(
                 name: "Produtos");

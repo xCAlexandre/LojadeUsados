@@ -1,0 +1,43 @@
+﻿@page "/TS/Produto/VerDetalhe"
+@page "/TS/Produto/VerDetalhe/{Produto}"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Detalhes:</h3>
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id do Produto</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Estado de Conservação</th>
+                <th scope="col">Tempo de Uso</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>@dproduto.IdProduto</td>
+                <td>@dproduto.Descricao</td>
+                <td>@dproduto.EstadodeConservacao</td>
+                <td>@dproduto.TempoDeUso</td>
+            </tr>
+            <a href="/TS/Produto/ListarProduto"><button class="btn btn-success">Voltar</button></a>
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private DetalheProduto dproduto = new DetalheProduto();
+
+    [Parameter]
+    public string Produto { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var produtoId = Produto;
+        dproduto  = await Http.GetFromJsonAsync<DetalheProduto>($"/DetalheProduto/Detalhes?id={produtoId}");
+    }
+}

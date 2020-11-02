@@ -2,12 +2,13 @@
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
- 
+
+
 <h3>CadastroProduto</h3>
 <div class="card m-3">
     <h4 class="card-header">Cadastro do Produto</h4>
     <div class="card-body">
-        <EditForm Model="@produto" OnValidSubmit="Validacao" @onreset="Reset">
+        <EditForm Model="@produto" OnValidSubmit="ValidC" @onreset="Reset">
             <DataAnnotationsValidator />
             <div class="form-row">
                 <div class="form-group col">
@@ -30,57 +31,98 @@
                     <ValidationMessage For="@(() => produto.Preco)" />
                 </div>
             </div>
+            @*
             <div class="form-row">
                 <div class="form-group col">
-                    <label>Descrição</label>
-                    <InputText @bind-Value="produto.Descricao" class="form-control" />
-                    <ValidationMessage For="@(() => produto.Descricao)" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>Tags</label>
-                    @*
-        <Dropdown>
-            <DropdownToggle Color="Color.Primary">
-                ...
-            </DropdownToggle>
-            <DropdownMenu>
-                @foreach (var tag in TagList)
-                {
-                    <DropdownItem>@tag.Nome</DropdownItem>
-                    <DropdownDivider />
-                }
-            </DropdownMenu>
-        </Dropdown>
-                    *@
-                    
+                    <label>id do Vendedor: </label>
+                    <InputText @bind-Value="produto.IdVendedor" class="form-control" />
 
                 </div>
             </div>
+                *@
+            <div class="form-row">
+                <label>Vendedor</label>
+                <InputSelect @bind-Value="produto.IdVendedor">
+                    <option value="">Selecione a Categoria</option>
+                    @foreach (var item in VendedorList)
+                    {
+
+                        <option value="@item.IdVendedor">@item.Nome</option>
+                    }
+                </InputSelect>
+            </div>
+            @*
+
+
+
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Descrição</label>
+                <InputText @bind-Value="produto.DetalheProduto.Descricao" class="form-control" />
+
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Estado de Conservação</label>
+                <InputText @bind-Value="produto.DetalheProduto.EstadodeConservacao" class="form-control" />
+
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Tempo de Uso</label>
+                <InputText @bind-Value="produto.DetalheProduto.TempoDeUso" class="form-control" />
+
+            </div>
+        </div>
+            *@
             <div class="text-center">
                 <button type="submit" class="btn btn-primary mr-1">Salvar</button>
                 <button type="reset" class="btn btn-secondary">Cancel</button>
             </div>
+
         </EditForm>
     </div>
 </div>
 
 
 @code {
-    private Produto produto = new Produto();
+    private List<Vendedor> VendedorList = new List<Vendedor>();
+    private ProdutoDTO produto = new ProdutoDTO();
     private EditContext editContext { get; set; }
-    
-    private async Task Validacao()
+    private List<Tag> TagList = new List<Tag>();
+
+    protected override async Task OnInitializedAsync()
     {
+        var vend = await Http.GetFromJsonAsync<List<Vendedor>>("/Vendedor/ListVendedores");//Rota para o controller ir e trazer uma lista de Vendedores
+        foreach (var item in vend)
+        {
+            VendedorList.Add(item);
+        }
+    }
+
+    private async Task ValidC()
+    {
+        Console.WriteLine(produto.IdVendedor);
         var p1 = await Http.PostAsJsonAsync("/Produto/Criar", produto); //manda para o controller criar um produto por um  Json Async
-        NavigationManager.NavigateTo("TS/Produto/ListarProduto"); // Navega até o endereco forçando o navegador a dar reload 
+        NavigationManager.NavigateTo("TS/Produto/AddDetalhe/" + produto.Id.ToString());
+        //NavigationManager.NavigateTo("TS/Produto/ListarProduto"); // Navega até o endereco forçando o navegador a dar reload
+
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tags)
+        {
+            TagList.Add(item);//adiciona cada item na TagList
+
+        }
     }
 
     private void Reset()
     {
-        produto = new Produto();
-        editContext = new EditContext(produto); //assim a validação nao é atualizada
+        produto = new ProdutoDTO();
+        editContext = new EditContext(produto); //Sinaliza quais campos foram modificados
     }
 
 }

@@ -1,0 +1,73 @@
+﻿@page  "/TS/Produto/AddDetalhe/{Produto}"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>DetalheProduto</h3>
+<div class="card m-3">
+    <h4 class="card-header"></h4>
+    <div class="card-body">
+        <EditForm Model="@detalheP"OnValidSubmit="VDP">
+            @*<DataAnnotationsValidator />*@
+           
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Descrição</label>
+                    <InputText @bind-Value="detalheP.Descricao" class="form-control" />
+                    @*<ValidationMessage For="@(() => tag.Nome)" />*@
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Estado de Conservação</label>
+                    <InputText @bind-Value="detalheP.EstadodeConservacao" class="form-control" />
+                    @*<ValidationMessage For="@(() => tag.Nome)" />*@
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Tempo de Uso</label>
+                    <InputText @bind-Value="detalheP.TempoDeUso" class="form-control" />
+                    @*<ValidationMessage For="@(() => tag.Nome)" />*@
+                </div>
+            </div>
+            @*
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Id do Produto</label>
+                    <InputNumber @bind-Value="detalheP.IdProduto" class="form-control">@produto.DetalheProduto.IdProduto</InputNumber>
+                    
+                </div>
+            </div>
+               *@
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+            </div>
+
+        </EditForm>
+
+    </div>
+</div>
+
+@code {
+    private DetalheProduto detalheP = new DetalheProduto();
+    private Produto produto = new Produto();
+
+    [Parameter]
+    public string Produto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var produtoId = Produto;
+        produto = await Http.GetFromJsonAsync<Produto>($"/Produto/PegaId?id={produtoId}"); //recebe um produto pelo Id enviado do controller que busca no db
+        detalheP.IdProduto=Convert.ToInt32(produtoId);    
+    }
+
+    private async Task VDP()
+    {
+        var d1 = await Http.PostAsJsonAsync("/DetalheProduto/CDetalhe", detalheP); //manda para o controller criar uma DetalheProduto por um  Json Async
+    }
+
+
+
+}

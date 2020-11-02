@@ -4,15 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-
 namespace ProjetoTS.Shared
 {
-    public class TagProduto
+    public class Vendedor
     {
-        public int Id { get; set; }//id do produto
-        public int TagId { get; set; }
-        public Tag tag { get; set; }
-        public Produto produto { get; set; }
+        public int IdVendedor { get; set; }
+        public string Nome { get; set; }
+        public string Endereco { get; set; }
+        public List<Produto> Produto { get; set; }
 
     }
 }

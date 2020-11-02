@@ -17,19 +17,32 @@ namespace ProjetoTS.Server.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("ProjetoTS.Shared.DetalheProduto", b =>
+                {
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("EstadodeConservacao")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("TempoDeUso")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("IdProduto");
+
+                    b.ToTable("DetalheProdutos");
+                });
+
             modelBuilder.Entity("ProjetoTS.Shared.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Descricao")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("Genero")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("IdSetor")
+                    b.Property<int>("IdVendedor")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -39,32 +52,14 @@ namespace ProjetoTS.Server.Migrations
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<int?>("SetorId")
+                    b.Property<int?>("VendedorIdVendedor")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SetorId");
+                    b.HasIndex("VendedorIdVendedor");
 
                     b.ToTable("Produtos");
-                });
-
-            modelBuilder.Entity("ProjetoTS.Shared.Setor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Setores");
                 });
 
             modelBuilder.Entity("ProjetoTS.Shared.Tag", b =>
@@ -93,14 +88,40 @@ namespace ProjetoTS.Server.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("TagProduto");
+                    b.ToTable("TagProdutos");
+                });
+
+            modelBuilder.Entity("ProjetoTS.Shared.Vendedor", b =>
+                {
+                    b.Property<int>("IdVendedor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Endereco")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("IdVendedor");
+
+                    b.ToTable("Vendedores");
+                });
+
+            modelBuilder.Entity("ProjetoTS.Shared.DetalheProduto", b =>
+                {
+                    b.HasOne("ProjetoTS.Shared.Produto", "Produto")
+                        .WithOne("DetalheProduto")
+                        .HasForeignKey("ProjetoTS.Shared.DetalheProduto", "IdProduto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjetoTS.Shared.Produto", b =>
                 {
-                    b.HasOne("ProjetoTS.Shared.Setor", "Setor")
-                        .WithMany("Produtos")
-                        .HasForeignKey("SetorId");
+                    b.HasOne("ProjetoTS.Shared.Vendedor", "Vendedor")
+                        .WithMany("Produto")
+                        .HasForeignKey("VendedorIdVendedor");
                 });
 
             modelBuilder.Entity("ProjetoTS.Shared.TagProduto", b =>

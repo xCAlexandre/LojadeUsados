@@ -16,15 +16,16 @@ namespace ProjetoTS.Server.Controllers
     {
         private readonly ApplicationDBContext db;
 
-        public ProdutoController(ApplicationDBContext db)
+        public ProdutoController(ApplicationDBContext db)//injeção de dependencia
         {
             this.db = db;
         }
 
         [HttpPost]
         [Route("Criar")]
-        public async Task<ActionResult> Post([FromBody] Produto produto)//recebe um produto do body do Http e não do header
+        public async Task<ActionResult> Post([FromBody] ProdutoDTO produto)//recebe um produto do body do Http e não do header
         {
+            
             try
             {
 
@@ -34,10 +35,11 @@ namespace ProjetoTS.Server.Controllers
                     Id = produto.Id,
                     Nome = produto.Nome,
                     Preco = produto.Preco,
-                    Genero = produto.Genero,
-                    Descricao = produto.Descricao,
-                    IdSetor = produto.IdSetor,
-                    Setor = produto.Setor
+                    TagProduto = produto.TagProduto,
+                    DetalheProduto=produto.DetalheProduto,
+                    Vendedor=produto.Vendedor,
+                    IdVendedor = Convert.ToInt32(produto.IdVendedor)
+                  
                 };
                 db.Add(newProduto);
                 await db.SaveChangesAsync();//insere na tabela
@@ -60,10 +62,10 @@ namespace ProjetoTS.Server.Controllers
 
         [HttpGet]
         [Route("PegaId")] //pega um produto pelo id
-        public async Task<IActionResult> Get([FromQuery] string id)
+        public async Task<Produto> Get([FromQuery] string id)
         {
             var produto = await db.Produtos.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
-            return Ok(produto);
+            return produto;
         }
 
         [HttpPut]

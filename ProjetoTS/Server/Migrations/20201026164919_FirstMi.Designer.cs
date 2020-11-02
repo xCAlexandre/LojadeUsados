@@ -8,8 +8,8 @@ using ProjetoTS.Server;
 namespace ProjetoTS.Server.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20201015220521_CR")]
-    partial class CR
+    [Migration("20201026164919_FirstMi")]
+    partial class FirstMi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,9 +30,6 @@ namespace ProjetoTS.Server.Migrations
                     b.Property<bool>("Genero")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IdSetor")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -40,39 +37,51 @@ namespace ProjetoTS.Server.Migrations
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<int>("SetorId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SetorId");
 
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("ProjetoTS.Shared.Setor", b =>
+            modelBuilder.Entity("ProjetoTS.Shared.Tag", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TagId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Descricao")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("Id");
+                    b.HasKey("TagId");
 
-                    b.ToTable("Setores");
+                    b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("ProjetoTS.Shared.Produto", b =>
+            modelBuilder.Entity("ProjetoTS.Shared.TagProduto", b =>
                 {
-                    b.HasOne("ProjetoTS.Shared.Setor", "Setor")
-                        .WithMany("Produtos")
-                        .HasForeignKey("SetorId")
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("TagId", "Id");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("TagProdutos");
+                });
+
+            modelBuilder.Entity("ProjetoTS.Shared.TagProduto", b =>
+                {
+                    b.HasOne("ProjetoTS.Shared.Produto", "produto")
+                        .WithMany("TagProduto")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjetoTS.Shared.Tag", "tag")
+                        .WithMany("TagProduto")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,0 +1,46 @@
+﻿@page "/TS/Vendedor/VendedorCadastro"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Cadastro Vendedor</h3>
+<div class="card m-3">
+    <h4 class="card-header"></h4>
+    <div class="card-body">
+        <EditForm Model="vendedor" OnValidSubmit="ValidacaoVend">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                
+                    <div class="form-row">
+                        <div class="form-group col-5">
+                            <table>Id Vendedor</table>
+                            <InputText class="form-control" @bind-Value="@vendedor.IdVendedor" />
+                            @*<ValidationMessage For="@(() => form.Sobrenome)" />*@
+                        </div>
+                        <div class="form-group col-5">
+                            <table>Nome</table>
+                            <InputText class="form-control" @bind-Value="@vendedor.Nome" />
+                            @*<ValidationMessage For="@(() => form.Nome)" />*@
+                        </div>
+                        <div class="form-group col-5">
+                            <table>Endereco</table>
+                            <InputText class="form-control" @bind-Value="@vendedor.Endereco" />
+                        </div>
+                    </div>
+            </div>
+            <button class="btn btn-outline-primary" type="submit">Salvar</button>
+            <button class="btn btn-outline-secondary" type="reset">Cancel</button>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    private VendedorDTO vendedor = new VendedorDTO();
+
+    private async Task ValidacaoVend()
+    {
+        var vend1 = await Http.PostAsJsonAsync("/Vendedor/CVendedor", vendedor); //manda para o controller criar uma Vendedor por um  Json Async
+        NavigationManager.NavigateTo("TS/Vendedor/ListarVendedor"); // Navega até o endereco forçando o navegador a dar reload
+    }
+}

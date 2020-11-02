@@ -12,24 +12,34 @@
             <tr>
                 <th scope="col">Nome</th>
                 <th scope="col">Preço</th>
-                <th scope="col">Descrição</th>
+                <th scope="col">Tag</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var produto in ProdutoList)
+            @foreach (var produto in ProdutoList) //roda a lista de produtos
             {
-                <tr>
-                    <td>@produto.Nome</td>
-                    <td>@String.Format("{0, 0:C2}", produto.Preco)</td>
-                    <td>@produto.Descricao</td>
-                    <td>
-                        <a href="/TS/EditarProduto/@produto.Id.ToString()"><button class="btn btn-success">Editar</button></a>
-                        <button class="btn btn-danger" @onclick="@(() => Deletar(produto.Id))">Delete</button>
-                    </td>
+            <tr>
+                <td>@produto.Nome</td>
+                <td>@String.Format("{0, 0:C2}", produto.Preco)</td>
+                
+                
+                @foreach (var item in TagProdutoList) //roda a lista de tags
+                {
+                    if (item.Id == produto.Id) { //só mostrará as tags que estiverem ligadas com o produto acima
+                        <td>@TagList[(@item.TagId)-1].Nome</td>
+                    }
+                   
 
-                </tr>
+                }
+            <td>
+                <a href="/TS/Produto/VerDetalhe/@produto.Id.ToString()"><button class="btn btn-success">Detalhe+</button></a>
+                <a href="/TS/Produto/EditarProduto/@produto.Id.ToString()"><button class="btn btn-success">Editar</button></a>
+                <button class="btn btn-danger" @onclick="@(() => Deletar(produto.Id))">Delete</button>
+            </td>
+
+            </tr>
             }
         </tbody>
     </table>
@@ -38,7 +48,14 @@
 
 @code {
     private List<Produto> ProdutoList = new List<Produto>();
+    private List<TagProduto> TagProdutoList = new List<TagProduto>();
+    private List<Tag> TagList = new List<Tag>();
 
+    //private Produto produto = new Produto();
+    private Tag tag = new Tag();
+
+
+    int idC;
     protected override async Task OnInitializedAsync()
     {
         var produtos = await Http.GetFromJsonAsync<List<Produto>>("/Produto/Listar");
@@ -47,7 +64,27 @@
             ProdutoList.Add(item);
 
         }
+
+        var tgp = await Http.GetFromJsonAsync<List<TagProduto>>("/TagProduto/LTagProduto");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tgp)
+        {
+            TagProdutoList.Add(item);
+        }
+
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tags)
+        {
+            TagList.Add(item);//adiciona cada item na TagList
+
+        }
     }
+    private async Task<string> PegaridP()
+    {
+      
+        var produto = await Http.GetFromJsonAsync<Produto>($"/TagProduto/IdP"+idC);
+        return produto.Nome;
+    }
+
 
     private async Task Deletar(int produtoId)
     {

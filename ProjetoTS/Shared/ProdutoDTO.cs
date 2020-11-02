@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ProjetoTS.Shared //CADA PRODUTO PODERA ESTAR LIGADO À VARIAS TAGS
 {
-    public class Produto
+    public class ProdutoDTO
     {
         [Required]
         public int Id { get; set; }
@@ -18,7 +18,7 @@ namespace ProjetoTS.Shared //CADA PRODUTO PODERA ESTAR LIGADO À VARIAS TAGS
         public decimal Preco { get; set; }
         public List<TagProduto> TagProduto { get; set; }//lista de tags que o produto vai ter
         public DetalheProduto DetalheProduto { get; set; }//Relacao 1 para 1
-        public int IdVendedor { get; set; }
+        public string IdVendedor { get; set; }
         public Vendedor Vendedor { get; set; }
     }
 }

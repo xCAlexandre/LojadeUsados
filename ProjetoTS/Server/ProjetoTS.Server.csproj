@@ -5,6 +5,53 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201019032103_Primeiro.cs" />
+    <Compile Remove="Migrations\20201019032103_Primeiro.Designer.cs" />
+    <Compile Remove="Migrations\20201026044833_ListarTagProduto2.cs" />
+    <Compile Remove="Migrations\20201026044833_ListarTagProduto2.Designer.cs" />
+    <Compile Remove="Migrations\20201026044919_Lstg.cs" />
+    <Compile Remove="Migrations\20201026044919_Lstg.Designer.cs" />
+    <Compile Remove="Migrations\20201026054522_TagprodutoInicial.cs" />
+    <Compile Remove="Migrations\20201026054522_TagprodutoInicial.Designer.cs" />
+    <Compile Remove="Migrations\20201028185749_UmpraUm.cs" />
+    <Compile Remove="Migrations\20201028185749_UmpraUm.Designer.cs" />
+    <Compile Remove="Migrations\20201028185959_UmpraUm.cs" />
+    <Compile Remove="Migrations\20201028185959_UmpraUm.Designer.cs" />
+    <Compile Remove="Migrations\20201028191254_UmpraUm.cs" />
+    <Compile Remove="Migrations\20201028191254_UmpraUm.Designer.cs" />
+    <Compile Remove="Migrations\20201028191651_UmpraUm.cs" />
+    <Compile Remove="Migrations\20201028191651_UmpraUm.Designer.cs" />
+    <Compile Remove="Migrations\20201028195552_UmpraUm.cs" />
+    <Compile Remove="Migrations\20201028195552_UmpraUm.Designer.cs" />
+    <Compile Remove="Migrations\20201028195954_UmpraUm.cs" />
+    <Compile Remove="Migrations\20201028195954_UmpraUm.Designer.cs" />
+    <Compile Remove="Migrations\20201028200014_onetoone.cs" />
+    <Compile Remove="Migrations\20201028200014_onetoone.Designer.cs" />
+    <Compile Remove="Migrations\20201029020936_VendedorUmpraMuitos.cs" />
+    <Compile Remove="Migrations\20201029020936_VendedorUmpraMuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029024900_VendedorUmpraMuitos.cs" />
+    <Compile Remove="Migrations\20201029024900_VendedorUmpraMuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029025100_VendedorUmpraMuitos.cs" />
+    <Compile Remove="Migrations\20201029025100_VendedorUmpraMuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029025849_VendedorOneToMany.cs" />
+    <Compile Remove="Migrations\20201029025849_VendedorOneToMany.Designer.cs" />
+    <Compile Remove="Migrations\20201029194907_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029194907_umpramuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029201249_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029201249_umpramuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029202447_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029202447_umpramuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029203956_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029203956_umpramuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029204406_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029204406_umpramuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029210542_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029210542_umpramuitos.Designer.cs" />
+    <Compile Remove="Migrations\20201029211247_umpramuitos.cs" />
+    <Compile Remove="Migrations\20201029211247_umpramuitos.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">

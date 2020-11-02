@@ -39,7 +39,6 @@
             private async Task ValidacaoTAG()
             {
                 var t1 = await Http.PostAsJsonAsync("/Tag/CriarTAG", tag); //manda para o controller criar uma tag por um  Json Async
-                Console.WriteLine("Passou!");
                 NavigationManager.NavigateTo("TS/Tag/ListarTag"); // Navega até o endereco forçando o navegador a dar reload
             }
 

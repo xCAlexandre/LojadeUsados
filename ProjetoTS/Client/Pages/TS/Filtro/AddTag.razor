@@ -1,0 +1,125 @@
+﻿@page "/TS/Filtro/AddTag"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@*
+    <h3>AddTag</h3>
+    <h2> Id do Produto </h2>
+    <!--lista de produtos-->
+    <!--Variavel que vai receber o produto(id)-->
+    <InputNumber @bind-Value="tagproduto.Id" class="form-control" />
+
+    <!--Lista de Tags-->
+    <!--Variavel que vai receber a tag(id)-->
+    <h2> Id da TAG </h2>
+    <InputNumber @bind-Value="tagproduto.TagId" class="form-control" />
+*@
+
+<!--mostrar os nomes-->
+<div class="card m-3">
+    <h4 class="card-header">Cadastro das Tags</h4>
+    <div class="card-body">
+        <EditForm Model="@tagproduto" OnValidSubmit="ValidacaoTagProduto" @onreset="Reset">
+            @*<DataAnnotationsValidator />*@
+            @*
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Id da TAG</label>
+                <InputNumber @bind-Value="tagproduto.TagId" class="form-control" />
+
+            </div>
+        </div>
+            *@
+            <div class="form-row">
+                <label>Tag</label>
+                <InputSelect ValueExpression="@(() => tagproduto.TagId)"
+                             Value="@tagproduto.TagId"
+                             ValueChanged="@((string value) => OnChangeCat(value))">
+                    <option value="">Selecione a Tag</option>
+                    @foreach (var item in TagList)
+                    {
+                        <option value="@item.TagId">@item.Nome</option>
+                    }
+                </InputSelect>
+            </div>
+
+
+            <div class="form-row">
+                <label>Produtos</label>
+                <InputSelect @bind-Value="tagproduto.Id">
+                    <option value="">Selecione o Produto</option>
+                    @foreach (var produto in ProdutoList)
+                    {
+                        <option value="@produto.Id">@produto.Nome</option>
+                    }
+                </InputSelect>
+            </div>
+
+            @*
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Id do produto</label>
+                <InputNumber @bind-Value="tagproduto.Id" class="form-control" />
+
+            </div>
+        </div>
+            *@
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+
+    </div>
+</div>
+@code {
+    private TagProdutoDTO tagproduto = new TagProdutoDTO();
+    private List<Tag> TagList = new List<Tag>();
+    private List<TagProduto> TagProdutoList = new List<TagProduto>();
+    private List<Produto> ProdutoList = new List<Produto>();
+    private EditContext editContext { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var produtos = await Http.GetFromJsonAsync<List<Produto>>("/Produto/Listar");
+        foreach (var item in produtos)
+        {
+            ProdutoList.Add(item);
+
+        }
+
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tags)
+        {
+            TagList.Add(item);//adiciona cada item na TagList
+
+        }
+
+    }
+
+
+    private async Task ValidacaoTagProduto()
+    {
+        var tp1 = await Http.PostAsJsonAsync("/TagProduto/AddTag", tagproduto);
+        Console.WriteLine(tagproduto);
+        NavigationManager.NavigateTo("/TS/Produto/ListarProduto"); // Navega até o endereco forçando o navegador a dar reload
+    }
+
+    private void Reset()
+    {
+        //tagproduto = new TagProduto();
+        editContext = new EditContext(tagproduto); //assim a validação nao é atualizada
+    }
+
+    private async Task OnChangeCat(string value)
+    {
+        tagproduto.TagId = value; //Seta o valor da Categoria no TagProdutoDTO
+        var tagprodutos = await Http.GetFromJsonAsync<List<TagProduto>>("/TagProduto/LTagProduto");
+        var produtosByCategory = tagprodutos.Where(c => c.TagId == Convert.ToInt32(value));
+        foreach (var item in produtosByCategory)
+        {
+            TagProdutoList.Add(item);
+        }
+
+    }
+}

@@ -13,14 +13,14 @@
 }
 
 @code {
-    private List<Tag> TagList = new List<Tag>();
+    private List<Tag> TagList = new List<Tag>();//Criar lista de tags
 
     protected override async Task OnInitializedAsync()
     {
-        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
         foreach (var item in tags)
         {
-            TagList.Add(item);
+            TagList.Add(item);//adiciona cada item na TagList
 
         }
     }

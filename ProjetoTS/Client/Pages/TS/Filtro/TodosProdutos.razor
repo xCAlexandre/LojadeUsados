@@ -1,0 +1,149 @@
+﻿@page "/TS/Filtro/TodosProdutos"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+@*
+    <div class ="form-row">
+        <label>Tags</label>
+        <InputSelect ValueExpression="@(()=>tag.TagId)"
+                     Value="@tag.TagId"
+                     ValueChanged="@((int value)=>@OnChangeCat(value))">
+            <option value="">Selecione a Tag</option>
+            @foreach (var item in TagList)
+            {
+                <option value="@item.TagId">@item.Nome</option>
+            }
+        </InputSelect>
+
+        @foreach(var item in ProdutoList){
+            <h3>@item.Nome</h3>
+        }
+        </div>
+
+<h3>Lista de Produtos</h3>
+<EditForm Model="@TagList" OnValidSubmit="OnChangeCat">
+    <div class="card m-3">
+        <h4 class="card-header">Tags</h4>
+        <div class="card-body">
+            <div class="form-row">
+                @foreach (var item in TagList)
+                {
+                    <div class="form-group col">
+                        <input type="checkbox" class="form-check-input">
+                        <label class="form-check-label" for="exampleCheck1">@item.Nome</label>
+                    </div>
+                }
+            </div>
+            <button type="submit" class="btn btn-primary mr-1">Filtrar</button>
+        </div>
+    </div>
+    <div>
+        @foreach (var item in ProdutoList)
+        {
+            <div class="form-group col">
+                <label class="form-check-label" for="exampleCheck1">@item.Nome</label>
+            </div>
+        }
+    </div>
+</EditForm>
+*@
+
+
+<div class="card m-3">
+    <h4 class="card-header">Filtrar</h4>
+    <div class="card-body">
+        <EditForm Model="@tagproduto">
+            <DataAnnotationsValidator />
+
+            <div class="form-row">
+                <label>Tag</label>
+                <InputSelect ValueExpression="@(() => tagproduto.TagId)"
+                             Value="@tagproduto.TagId"
+                             ValueChanged="@((string value) => OnChangeCat(value))">
+                    <option value="">Selecione a Categoria</option>
+                    @foreach (var item in TagList)
+                    {
+                        <option value="@item.TagId">@item.Nome</option>
+                    }
+                </InputSelect>
+            </div>
+
+            
+                <label>Produtos:</label>
+
+                @foreach (var tag in TagProdutoList)
+                {
+
+
+                    @foreach (var produto in ProdutoList) //roda a lista de tags
+                    {
+                        
+                            if (tag.Id == produto.Id)
+                            {
+
+                            <tr>
+                            <td>@produto.Id - @produto.Nome</td>
+                            </tr>
+                            }
+                            
+                     }
+
+                        
+                }
+                
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
+    @code {
+        private TagProdutoDTO tagproduto = new TagProdutoDTO();
+        private Tag tag = new Tag();
+        private List<Produto> ProdutoList = new List<Produto>();
+        private List<TagProduto> TagProdutoList = new List<TagProduto>();
+        private List<Tag> TagList = new List<Tag>();
+
+        protected override async Task OnInitializedAsync()
+        {
+            var produtos = await Http.GetFromJsonAsync<List<Produto>>("/Produto/Listar");
+            foreach (var item in produtos)
+            {
+                ProdutoList.Add(item);
+
+            }
+
+            @*
+            var tgp = await Http.GetFromJsonAsync<List<TagProduto>>("/TagProduto/LTagProduto");//Rota para o controller ir e trazer uma lista das Tags
+            foreach (var item in tgp)
+            {
+                TagProdutoList.Add(item);
+            }
+                *@
+
+            var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
+            foreach (var item in tags)
+            {
+                TagList.Add(item);//adiciona cada item na TagList
+
+            }
+
+        }
+
+        private async Task OnChangeCat(string value)
+        {
+            tagproduto.TagId = value; //Seta o valor da Categoria no pedidoDto
+            var tagprodutos = await Http.GetFromJsonAsync<List<TagProduto>>("/TagProduto/LTagProduto");
+            TagProdutoList.Clear();
+            var produtosByCategory = tagprodutos.Where(c => c.TagId == Convert.ToInt32(value));
+            foreach (var item in produtosByCategory)
+            {
+                TagProdutoList.Add(item);
+            }
+
+        }
+    }
