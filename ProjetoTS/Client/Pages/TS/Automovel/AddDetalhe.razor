@@ -1,9 +1,9 @@
-﻿@page  "/TS/Produto/AddDetalhe/{Produto}"
+﻿@page  "/TS/Automovel/AddDetalhe/{Automovel}"
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<h3>DetalheProduto</h3>
+<h3>DetalheAutomovel</h3>
 <div class="card m-3">
     <h4 class="card-header"></h4>
     <div class="card-body">
@@ -34,8 +34,8 @@
             @*
             <div class="form-row">
                 <div class="form-group col">
-                    <label>Id do Produto</label>
-                    <InputNumber @bind-Value="detalheP.IdProduto" class="form-control">@produto.DetalheProduto.IdProduto</InputNumber>
+                    <label>Id do Automovel</label>
+                    <InputNumber @bind-Value="detalheP.IdAutomovel" class="form-control">@automovel.DetalheAutomovel.IdAutomovel</InputNumber>
                     
                 </div>
             </div>
@@ -50,22 +50,22 @@
 </div>
 
 @code {
-    private DetalheProduto detalheP = new DetalheProduto();
-    private Produto produto = new Produto();
+    private DetalheAutomovel detalheP = new DetalheAutomovel();
+    private Automovel automovel = new Automovel();
 
     [Parameter]
-    public string Produto { get; set; }
+    public string Automovel { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var produtoId = Produto;
-        produto = await Http.GetFromJsonAsync<Produto>($"/Produto/PegaId?id={produtoId}"); //recebe um produto pelo Id enviado do controller que busca no db
-        detalheP.IdProduto=Convert.ToInt32(produtoId);    
+        var automovelId = Automovel;
+        automovel = await Http.GetFromJsonAsync<Automovel>($"/Automovel/PegaId?id={automovelId}"); //recebe um automovel pelo Id enviado do controller que busca no db
+        detalheP.IdAutomovel=Convert.ToInt32(automovelId);    
     }
 
     private async Task VDP()
     {
-        var d1 = await Http.PostAsJsonAsync("/DetalheProduto/CDetalhe", detalheP); //manda para o controller criar uma DetalheProduto por um  Json Async
+        var d1 = await Http.PostAsJsonAsync("/DetalheAutomovel/CDetalhe", detalheP); //manda para o controller criar uma DetalheAutomovel por um  Json Async
     }
 
 

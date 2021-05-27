@@ -1,0 +1,28 @@
+﻿@page "/TS/Usuario/ListarUsuario"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Listar Usuarios</h3>
+@foreach (var vend in UsuarioList)
+{
+    <tr>
+        <td>@vend.Nome</td>
+    </tr>
+}
+<a href="/TS/Usuario/ListarAutomovelUsuarios"><button class="btn btn-success">Lista De Automovel por Usuario</button></a>
+
+@code {
+    private List<Usuario> UsuarioList = new List<Usuario>();//Criar lista de Usuarios
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vend1 = await Http.GetFromJsonAsync<List<Usuario>>("/Usuario/ListUsuarios");//Rota para o controller ir e trazer uma lista das Usuarios
+        foreach (var item in vend1)
+        {
+            UsuarioList.Add(item);//adiciona cada item na TagList
+
+        }
+    }
+
+}

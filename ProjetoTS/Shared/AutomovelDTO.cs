@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 
-namespace ProjetoTS.Shared //CADA PRODUTO PODERA ESTAR LIGADO À VARIAS TAGS
+namespace ProjetoTS.Shared //CADA Automovel PODERA ESTAR LIGADO À VARIAS TAGS
 {
-    public class ProdutoDTO
+    public class AutomovelDTO
     {
         [Required]
         public int Id { get; set; }
@@ -16,9 +16,9 @@ namespace ProjetoTS.Shared //CADA PRODUTO PODERA ESTAR LIGADO À VARIAS TAGS
         [Required]
         [Column(TypeName = "decimal(5,2)")]
         public decimal Preco { get; set; }
-        public List<TagProduto> TagProduto { get; set; }//lista de tags que o produto vai ter
-        public DetalheProduto DetalheProduto { get; set; }//Relacao 1 para 1
-        public string IdVendedor { get; set; }
-        public Vendedor Vendedor { get; set; }
+        public List<TagAutomovel> TagAutomovel { get; set; }//lista de tags que o Automovel vai ter
+        public DetalheAutomovel DetalheAutomovel { get; set; }//Relacao 1 para 1
+        public string IdUsuario { get; set; }
+        public Usuario Usuario { get; set; }
     }
 }

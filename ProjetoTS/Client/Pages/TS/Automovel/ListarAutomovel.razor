@@ -1,0 +1,96 @@
+﻿@page "/TS/Automovel/ListarAutomovel"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Listar Automovels</h3>
+
+
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Tag</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Automovel in AutomovelList) //roda a lista de Automovels
+            {
+            <tr>
+                <td>@Automovel.Nome</td>
+                <td>@String.Format("{0, 0:C2}", Automovel.Preco)</td>
+                
+                
+                @foreach (var item in TagAutomovelList) //roda a lista de tags
+                {
+                    if (item.Id == Automovel.Id) { //só mostrará as tags que estiverem ligadas com o Automovel acima
+                        <td>@TagList[(@item.TagId)-1].Nome</td>
+                    }
+                   
+
+                }
+            <td>
+                <a href="/TS/Automovel/VerDetalhe/@Automovel.Id.ToString()"><button class="btn btn-success">Detalhe+</button></a>
+                <a href="/TS/Automovel/EditarAutomovel/@Automovel.Id.ToString()"><button class="btn btn-success">Editar</button></a>
+                <button class="btn btn-danger" @onclick="@(() => Deletar(Automovel.Id))">Delete</button>
+            </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<Automovel> AutomovelList = new List<Automovel>();
+    private List<TagAutomovel> TagAutomovelList = new List<TagAutomovel>();
+    private List<Tag> TagList = new List<Tag>();
+
+    //private Automovel Automovel = new Automovel();
+    private Tag tag = new Tag();
+
+
+    int idC;
+    protected override async Task OnInitializedAsync()
+    {
+        var Automovels = await Http.GetFromJsonAsync<List<Automovel>>("/Automovel/Listar");
+        foreach (var item in Automovels)
+        {
+            AutomovelList.Add(item);
+
+        }
+
+        var tgp = await Http.GetFromJsonAsync<List<TagAutomovel>>("/TagAutomovel/LTagAutomovel");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tgp)
+        {
+            TagAutomovelList.Add(item);
+        }
+
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tags)
+        {
+            TagList.Add(item);//adiciona cada item na TagList
+
+        }
+    }
+    private async Task<string> PegaridP()
+    {
+      
+        var Automovel = await Http.GetFromJsonAsync<Automovel>($"/TagAutomovel/IdP"+idC);
+        return Automovel.Nome;
+    }
+
+
+    private async Task Deletar(int AutomovelId)
+    {
+        //call controller
+        await Http.DeleteAsync("/Automovel/Deletar/" + AutomovelId);
+        NavigationManager.NavigateTo("TS/Automovel/ListarAutomovel", true);
+    }
+
+}

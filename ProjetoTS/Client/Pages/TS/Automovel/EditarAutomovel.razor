@@ -1,34 +1,34 @@
-﻿@page  "/TS/Produto/EditarProduto"
-@page "/TS/Produto/EditarProduto/{Produto}"
+﻿@page  "/TS/Automovel/EditarAutomovel"
+@page "/TS/Automovel/EditarAutomovel/{Automovel}"
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<h3>EditarProduto</h3>
+<h3>EditarAutomovel</h3>
 
 <div class="card m-3">
-    <h4 class="card-header">Cadastro do Produto</h4>
+    <h4 class="card-header">Cadastro do Automovel</h4>
     <div class="card-body">
-        <EditForm Model="@produto" OnValidSubmit="Validacao" @onreset="Reset">
+        <EditForm Model="@automovel" OnValidSubmit="Validacao" @onreset="Reset">
             <DataAnnotationsValidator />
             <div class="form-row">
                 <div class="form-group col">
                     <label>Id</label>
-                    <InputNumber @bind-Value="produto.Id" class="form-control" />
+                    <InputNumber @bind-Value="automovel.Id" class="form-control" />
                     
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label>Nome</label>
-                    <InputText @bind-Value="produto.Nome" class="form-control" />
+                    <InputText @bind-Value="automovel.Nome" class="form-control" />
                     
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label>Preço</label>
-                    <InputNumber @bind-Value="produto.Preco" @bind-Value:format="F2" class="form-control" />
+                    <InputNumber @bind-Value="automovel.Preco" @bind-Value:format="F2" class="form-control" />
                    
                 </div>
             </div>
@@ -41,28 +41,28 @@
 </div>
 
 @code {
-    private Produto produto = new Produto();
+    private Automovel automovel = new Automovel();
 
     [Parameter]
-    public string Produto { get; set; }
+    public string Automovel { get; set; }
     private EditContext editContext { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var produtoId = Produto;
-        produto = await Http.GetFromJsonAsync<Produto>($"/Produto/PegaId?id={produtoId}"); //recebe um produto pelo Id enviado do controller que busca no db
+        var automovelId = Automovel;
+        automovel = await Http.GetFromJsonAsync<Automovel>($"/Automovel/PegaId?id={automovelId}"); //recebe um automovel pelo Id enviado do controller que busca no db
     }
 
     private async Task Validacao()
     {
-        await Http.PutAsJsonAsync("/Produto/Atualizar", produto); //manda para o controller criar um produto por um  Json Async
-        NavigationManager.NavigateTo("TS/Produto/ListarProduto"); // Navega até o endereco forçando o navegador a dar reload
+        await Http.PutAsJsonAsync("/Automovel/Atualizar", automovel); //manda para o controller criar um automovel por um  Json Async
+        NavigationManager.NavigateTo("TS/Automovel/ListarAutomovel"); // Navega até o endereco forçando o navegador a dar reload
     }
 
     private void Reset()
     {
-        produto = new Produto();
-        editContext = new EditContext(produto); //assim a validação nao é atualizada
+        automovel = new Automovel();
+        editContext = new EditContext(automovel); //assim a validação nao é atualizada
     }
 
 }

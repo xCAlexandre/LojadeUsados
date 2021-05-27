@@ -12,29 +12,29 @@ namespace ProjetoTS.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VendedorController : Controller
+    public class UsuarioController : Controller
     {
         private readonly ApplicationDBContext db;
 
-        public VendedorController(ApplicationDBContext db)//injeção de dependencia
+        public UsuarioController(ApplicationDBContext db)//injeção de dependencia
         {
             this.db = db;
         }
 
         [HttpPost]
-        [Route("CVendedor")]
-        public async Task<ActionResult> Post([FromBody] VendedorDTO vendedor)//recebe um produto do body do Http e não do header
+        [Route("CUsuario")]
+        public async Task<ActionResult> Post([FromBody] UsuarioDTO Usuario)//recebe um Automovel do body do Http e não do header
         {
             try
             {
-                var newVendedor = new Vendedor
+                var newUsuario = new Usuario
                 {
-                    IdVendedor=Convert.ToInt32(vendedor.IdVendedor),
-                    Nome=vendedor.Nome,
-                    Endereco=vendedor.Endereco,
-                    Produto=vendedor.Produto
+                    IdUsuario=Convert.ToInt32(Usuario.IdUsuario),
+                    Nome=Usuario.Nome,
+                    Endereco=Usuario.Endereco,
+                    Automovel=Usuario.Automovel
                 };
-                db.Add(newVendedor);
+                db.Add(newUsuario);
                 await db.SaveChangesAsync();//insere na tabela
                 return Ok();
 
@@ -47,11 +47,11 @@ namespace ProjetoTS.Server.Controllers
 
        
         [HttpGet]
-        [Route("ListVendedores")]
+        [Route("ListUsuarios")]
         public async Task<IActionResult> Get() //o tipo de retorno dessa ação
         {
-            var vendedores = await db.Vendedores.ToListAsync();//resulta em uma Lista de Produtos
-            return Ok(vendedores);
+            var Usuarios = await db.Usuarios.ToListAsync();//resulta em uma Lista de Automovels
+            return Ok(Usuarios);
         }
         
     }
