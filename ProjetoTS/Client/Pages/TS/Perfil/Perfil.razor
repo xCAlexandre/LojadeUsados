@@ -1,0 +1,76 @@
+@page "/TS/Perfil/Perfil"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="text-left">
+    
+</div>
+<div class="content">
+    <div class="card">
+        <figure class="text-left" style="margin: 50px">           
+                 <h1 class="display-4">Perfil</h1> 
+        </figure>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive table-space">
+                    <table class="table table-hover" id="table-lista-cadastrados">
+                        <thead>
+                            <div class="container">
+                                <form class="row g-3 needs-validation" novalidate>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="text-center">
+                                                <img src="data:image/png;base64,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"
+                                                    class="rounded-circle" style="height: 125px;" ;"  alt="">
+                                            <div class="d-grid gap-2 col-6 mx-auto" >
+                                                <button type="button" class="btn btn-success btn-sm" style="margin-top: 50px; margin-bottom: 15px;">Change picture</button>
+                                            </div>
+                                            <div class="d-grid gap-2 col-6 mx-auto">
+                                                <button type="button" class="btn btn-success btn-sm" style="margin-top: 15px;">Status</button>
+                                            </div>
+                                            <div class="d-grid gap-2 col-6 mx-auto">
+                                                <button type="button" class="btn btn-success btn-sm" style="margin-top: 15px;">historic</button>
+                                            </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="Name" class="form-label">Name</label>
+                                            <input type="text" id="Name" class="form-control"
+                                                placeholder="" aria-label="Name" required>
+
+                                            <label for="Address" class="form-label">Address</label>
+                                            <input type="text" id="Address" class="form-control"
+                                                placeholder="" aria-label="Address" required>
+
+                                            <label for="CPF" class="form-label">CPF</label>
+                                            <input type="text" id="CPF" class="form-control"
+                                                placeholder="" aria-label="CPF" required>
+
+                                            <label for="birthday" class="form-label">birthday</label>
+                                            <input type="text" id="birthday" class="form-control"
+                                                placeholder="" aria-label="birthday" required>
+
+                                            <label for="E-mail" class="form-label">E-mail</label>
+                                            <input type="text" id="E-mail" class="form-control"
+                                                placeholder="" aria-label="E-mail" required>
+                                            
+                                            <label for="Phone number" class="form-label">Phone number</label>
+                                            <input type="text" id="Phone number" class="form-control"
+                                                placeholder="" aria-label="Phone number" required>
+
+                                        </div>
+                                    </div>      
+                                </form>
+                            </div>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

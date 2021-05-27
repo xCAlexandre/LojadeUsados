@@ -14,21 +14,21 @@
                 <div class="form-group col">
                     <label>Id</label>
                     <InputNumber @bind-Value="Automovel.Id" class="form-control" />
-                    <ValidationMessage For="@(() => Automovel.Id)" />
+                    
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label>Nome</label>
                     <InputText @bind-Value="Automovel.Nome" class="form-control" />
-                    <ValidationMessage For="@(() => Automovel.Nome)" />
+                   
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label>Preço</label>
                     <InputNumber @bind-Value="Automovel.Preco" @bind-Value:format="F2" class="form-control" />
-                    <ValidationMessage For="@(() => Automovel.Preco)" />
+                    
                 </div>
             </div>
             <div class="form-row">
