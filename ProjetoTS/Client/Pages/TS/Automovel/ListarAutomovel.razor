@@ -5,48 +5,34 @@
 
 <h3>Listar Automovels</h3>
 
+    <head>
+        <meta charset="UTF-8">
+        <title>Catalogo LoCAR</title>
+        <link rel="stylesheet" href="reset.css">
+    </head>
 
-<div class="card-body">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Preço</th>
-                <th scope="col">Tag</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var Automovel in AutomovelList) //roda a lista de Automovels
-            {
-            <tr>
-                <td>@Automovel.Nome</td>
-                <td>@String.Format("{0, 0:C2}", Automovel.Preco)</td>
-                
-                
-                @foreach (var item in TagAutomovelList) //roda a lista de tags
-                {
-                    if (item.Id == Automovel.Id) { //só mostrará as tags que estiverem ligadas com o Automovel acima
-                        <td>@TagList[(@item.TagId)-1].Nome</td>
-                    }
-                   
-
-                }
-            <td>
-                <a href="/TS/Automovel/VerDetalhe/@Automovel.Id.ToString()"><button class="btn btn-success">Detalhe+</button></a>
-                <a href="/TS/Automovel/EditarAutomovel/@Automovel.Id.ToString()"><button class="btn btn-success">Editar</button></a>
-                <button class="btn btn-danger" @onclick="@(() => Deletar(Automovel.Id))">Delete</button>
-            </td>
-
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
+    <body>
+        <div class="card border-success mb-3" style="width: 12rem; margin">
+            <img  class="card-img-top" src="https://www.automaistv.com.br/wp-content/uploads/2020/07/toyota_corolla_hybrid_sedan_86_edited.jpg" >
+            <div class="card-body">
+                <h5 class="card-title, text-center">Toyota Corolla</h5>
+                <div style="display: inline-flex;" class="container">
+                <div style="margin-right: 50px ;" class="row">
+                    <div class="col, text-sm">Sedan</div>
+                    <div class="col, text-sm">2018</div>
+                </div>
+                <div  class="row">    
+                    <div class="col, text-sm">Automático</div>
+                    <div class="col, text-sm">R$500,00</div>
+                </div>
+                </div>
+            </div>
+        </div>
+       
+    </body>
 
 @code {
+    
     private List<Automovel> AutomovelList = new List<Automovel>();
     private List<TagAutomovel> TagAutomovelList = new List<TagAutomovel>();
     private List<Tag> TagList = new List<Tag>();
