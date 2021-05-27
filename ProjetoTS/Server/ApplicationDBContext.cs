@@ -16,37 +16,37 @@ namespace ProjetoTS.Server
         {
 
         }
-        public DbSet<Vendedor> Vendedores { get; set; }
-        public DbSet<TagProduto> TagProdutos { get; set; }
-        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<TagAutomovel> TagAutomovels { get; set; }
+        public DbSet<Automovel> Automovels { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<DetalheProduto> DetalheProdutos { get; set; }
+        public DbSet<DetalheAutomovel> DetalheAutomovels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)//criando a chave composta com fluent API
         {
-            //modelBuilder.Entity<Vendedor>().HasNoKey();
+            //modelBuilder.Entity<Usuario>().HasNoKey();
               
-            modelBuilder.Entity<Vendedor>().HasKey(x => new { x.IdVendedor});
+            modelBuilder.Entity<Usuario>().HasKey(x => new { x.IdUsuario});
 
 
             //------------------------------------------ Um pra um
-            modelBuilder.Entity<DetalheProduto>().HasKey(x => new { x.IdProduto});
+            modelBuilder.Entity<DetalheAutomovel>().HasKey(x => new { x.IdAutomovel});
 
-            modelBuilder.Entity<Produto>()
-            .HasOne(a => a.DetalheProduto)
-            .WithOne(a => a.Produto)
-            .HasForeignKey<DetalheProduto>(c => c.IdProduto);//Fazendo a ligação de um pra um
+            modelBuilder.Entity<Automovel>()
+            .HasOne(a => a.DetalheAutomovel)
+            .WithOne(a => a.Automovel)
+            .HasForeignKey<DetalheAutomovel>(c => c.IdAutomovel);//Fazendo a ligação de um pra um
 
             //------------------------------------------ Muitos Pra Muitos
-            modelBuilder.Entity<TagProduto>().HasKey(x => new { x.TagId, x.Id });//Ele recebe as "primary key" das tabelas Tag e produto 
+            modelBuilder.Entity<TagAutomovel>().HasKey(x => new { x.TagId, x.Id });//Ele recebe as "primary key" das tabelas Tag e automovel 
 
 
-            modelBuilder.Entity<TagProduto>().HasOne(xy => xy.tag)//TagProduto tem 1 tag
-                .WithMany(x => x.TagProduto)//Com muitos TagProdutos
+            modelBuilder.Entity<TagAutomovel>().HasOne(xy => xy.tag)//TagAutomovel tem 1 tag
+                .WithMany(x => x.TagAutomovel)//Com muitos TagAutomovels
                 .HasForeignKey(xy => xy.TagId);//Com foreign key de tag
 
-            modelBuilder.Entity<TagProduto>().HasOne(xy => xy.produto)
-                .WithMany(y => y.TagProduto)
+            modelBuilder.Entity<TagAutomovel>().HasOne(xy => xy.automovel)
+                .WithMany(y => y.TagAutomovel)
                 .HasForeignKey(xy => xy.Id);
         }
     }

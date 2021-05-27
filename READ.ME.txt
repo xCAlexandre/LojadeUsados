@@ -1,0 +1,3 @@
+Refatorações:
+- Usuario = EMPRESA
+- Produto = Automovel

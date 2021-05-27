@@ -12,33 +12,33 @@ namespace ProjetoTS.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DetalheProdutoController : Controller
+    public class DetalheAutomovelController : Controller
     {
         private readonly ApplicationDBContext db;
 
-        public DetalheProdutoController(ApplicationDBContext db)//injeção de dependencia
+        public DetalheAutomovelController(ApplicationDBContext db)//injeção de dependencia
         {
             this.db = db;
         }
 
         [HttpPost]
         [Route("CDetalhe")]
-        public async Task<ActionResult> Post([FromBody] DetalheProduto detalheProduto)//recebe um produto do body do Http e não do header
+        public async Task<ActionResult> Post([FromBody] DetalheAutomovel detalheAutomovel)//recebe um automovel do body do Http e não do header
         {
 
             try
             {
 
-                var newDProduto = new DetalheProduto
+                var newDAutomovel = new DetalheAutomovel
                 {
-                    IdProduto=detalheProduto.IdProduto,
-                    Descricao = detalheProduto.Descricao,
-                    TempoDeUso = detalheProduto.TempoDeUso,
-                    EstadodeConservacao = detalheProduto.EstadodeConservacao
+                    IdAutomovel=detalheAutomovel.IdAutomovel,
+                    Descricao = detalheAutomovel.Descricao,
+                    TempoDeUso = detalheAutomovel.TempoDeUso,
+                    EstadodeConservacao = detalheAutomovel.EstadodeConservacao
 
 
                 };
-                db.Add(newDProduto);
+                db.Add(newDAutomovel);
                 await db.SaveChangesAsync();//insere na tabela
                 return Ok();
 
@@ -50,11 +50,11 @@ namespace ProjetoTS.Server.Controllers
         }
 
         [HttpGet]
-        [Route("Detalhes")] //pega o detalhe do produto
-        public async Task<DetalheProduto> Get([FromQuery] string id)
+        [Route("Detalhes")] //pega o detalhe do automovel
+        public async Task<DetalheAutomovel> Get([FromQuery] string id)
         {
 
-            var deta = await db.DetalheProdutos.SingleOrDefaultAsync(x => x.IdProduto == Convert.ToInt32(id));
+            var deta = await db.DetalheAutomovels.SingleOrDefaultAsync(x => x.IdAutomovel == Convert.ToInt32(id));
             return deta;
         }
     }

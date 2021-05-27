@@ -1,0 +1,62 @@
+﻿@page "/TS/Usuario/ListarAutomovelUsuarios"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>ListarAutomovelUsuarios</h3>
+
+
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Automovel</th>
+            </tr>
+        </thead>
+
+        @foreach (var Usuario in UsuarioList) //roda a lista de Automovels
+        {
+            <tbody>
+                <tr>
+                    <td>@Usuario.Nome</td>
+                    @foreach (var Automovel in AutomovelList) //roda a lista de tags
+                    {
+                        if (Usuario.IdUsuario == Automovel.IdUsuario)
+                        { //só mostrará as tags que estiverem ligadas com o Automovel acima
+                            <td>@Automovel.Nome</td>
+                        }
+
+
+                    }
+                </tr>
+            </tbody>
+        }
+
+    </table>
+</div>
+
+
+
+
+
+@code {
+    private List<Usuario> UsuarioList = new List<Usuario>();//Criar lista de Usuarios
+    private List<Automovel> AutomovelList = new List<Automovel>();
+    protected override async Task OnInitializedAsync()
+    {
+        var vend1 = await Http.GetFromJsonAsync<List<Usuario>>("/Usuario/ListUsuarios");//Rota para o controller ir e trazer uma lista das Usuarios
+        foreach (var item in vend1)
+        {
+            UsuarioList.Add(item);//adiciona cada item na TagList
+
+        }
+
+        var Automovels = await Http.GetFromJsonAsync<List<Automovel>>("/Automovel/Listar");
+        foreach (var item in Automovels)
+        {
+            AutomovelList.Add(item);
+
+        }
+    }
+}

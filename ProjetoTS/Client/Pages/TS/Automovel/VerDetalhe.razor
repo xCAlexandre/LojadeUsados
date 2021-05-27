@@ -1,0 +1,43 @@
+﻿@page "/TS/Automovel/VerDetalhe"
+@page "/TS/Automovel/VerDetalhe/{Automovel}"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Detalhes:</h3>
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id do Automovel</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Estado de Conservação</th>
+                <th scope="col">Tempo de Uso</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>@dautomovel.IdAutomovel</td>
+                <td>@dautomovel.Descricao</td>
+                <td>@dautomovel.EstadodeConservacao</td>
+                <td>@dautomovel.TempoDeUso</td>
+            </tr>
+            <a href="/TS/Automovel/ListarAutomovel"><button class="btn btn-success">Voltar</button></a>
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private DetalheAutomovel dautomovel = new DetalheAutomovel();
+
+    [Parameter]
+    public string Automovel { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var automovelId = Automovel;
+        dautomovel  = await Http.GetFromJsonAsync<DetalheAutomovel>($"/DetalheAutomovel/Detalhes?id={automovelId}");
+    }
+}

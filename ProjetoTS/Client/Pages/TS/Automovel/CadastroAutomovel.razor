@@ -1,0 +1,119 @@
+﻿@page "/TS/Automovel/CadastrarAutomovel"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+
+<h3>CadastroAutomovel</h3>
+<div class="card m-3">
+    <h4 class="card-header">Cadastro do Automovel</h4>
+    <div class="card-body">
+        <EditForm Model="@Automovel" OnValidSubmit="ValidC" @onreset="Reset">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Id</label>
+                    <InputNumber @bind-Value="Automovel.Id" class="form-control" />
+                    <ValidationMessage For="@(() => Automovel.Id)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nome</label>
+                    <InputText @bind-Value="Automovel.Nome" class="form-control" />
+                    <ValidationMessage For="@(() => Automovel.Nome)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Preço</label>
+                    <InputNumber @bind-Value="Automovel.Preco" @bind-Value:format="F2" class="form-control" />
+                    <ValidationMessage For="@(() => Automovel.Preco)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Usuario</label>
+                <InputSelect @bind-Value="Automovel.IdUsuario">
+                    <option value="">Selecione a Categoria</option>
+                    @foreach (var item in UsuarioList)
+                    {
+
+                        <option value="@item.IdUsuario">@item.Nome</option>
+                    }
+                </InputSelect>
+            </div>
+            @*
+
+
+
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Descrição</label>
+                <InputText @bind-Value="Automovel.DetalheAutomovel.Descricao" class="form-control" />
+
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Estado de Conservação</label>
+                <InputText @bind-Value="Automovel.DetalheAutomovel.EstadodeConservacao" class="form-control" />
+
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Tempo de Uso</label>
+                <InputText @bind-Value="Automovel.DetalheAutomovel.TempoDeUso" class="form-control" />
+
+            </div>
+        </div>
+            *@
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    private List<Usuario> UsuarioList = new List<Usuario>();
+    private AutomovelDTO Automovel = new AutomovelDTO();
+    private EditContext editContext { get; set; }
+    private List<Tag> TagList = new List<Tag>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vend = await Http.GetFromJsonAsync<List<Usuario>>("/Usuario/ListUsuarios");//Rota para o controller ir e trazer uma lista de Usuarioes
+        foreach (var item in vend)
+        {
+            UsuarioList.Add(item);
+        }
+    }
+
+    private async Task ValidC()
+    {
+        Console.WriteLine(Automovel.IdUsuario);
+        var p1 = await Http.PostAsJsonAsync("/Automovel/Criar", Automovel); //manda para o controller criar um Automovel por um  Json Async
+        NavigationManager.NavigateTo("TS/Automovel/AddDetalhe/" + Automovel.Id.ToString());
+        //NavigationManager.NavigateTo("TS/Automovel/ListarAutomovel"); // Navega até o endereco forçando o navegador a dar reload
+
+        var tags = await Http.GetFromJsonAsync<List<Tag>>("/Tag/ListarTAG");//Rota para o controller ir e trazer uma lista das Tags
+        foreach (var item in tags)
+        {
+            TagList.Add(item);//adiciona cada item na TagList
+
+        }
+    }
+
+    private void Reset()
+    {
+        Automovel = new AutomovelDTO();
+        editContext = new EditContext(Automovel); //Sinaliza quais campos foram modificados
+    }
+
+}

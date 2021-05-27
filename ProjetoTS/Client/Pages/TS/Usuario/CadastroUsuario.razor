@@ -1,30 +1,30 @@
-﻿@page "/TS/Vendedor/VendedorCadastro"
+﻿@page "/TS/Usuario/UsuarioCadastro"
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<h3>Cadastro Vendedor</h3>
+<h3>Cadastro Usuario</h3>
 <div class="card m-3">
     <h4 class="card-header"></h4>
     <div class="card-body">
-        <EditForm Model="vendedor" OnValidSubmit="ValidacaoVend">
+        <EditForm Model="Usuario" OnValidSubmit="ValidacaoVend">
             <DataAnnotationsValidator />
             <div class="form-group">
                 
                     <div class="form-row">
                         <div class="form-group col-5">
-                            <table>Id Vendedor</table>
-                            <InputText class="form-control" @bind-Value="@vendedor.IdVendedor" />
+                            <table>Id Usuario</table>
+                            <InputText class="form-control" @bind-Value="@Usuario.IdUsuario" />
                             @*<ValidationMessage For="@(() => form.Sobrenome)" />*@
                         </div>
                         <div class="form-group col-5">
                             <table>Nome</table>
-                            <InputText class="form-control" @bind-Value="@vendedor.Nome" />
+                            <InputText class="form-control" @bind-Value="@Usuario.Nome" />
                             @*<ValidationMessage For="@(() => form.Nome)" />*@
                         </div>
                         <div class="form-group col-5">
                             <table>Endereco</table>
-                            <InputText class="form-control" @bind-Value="@vendedor.Endereco" />
+                            <InputText class="form-control" @bind-Value="@Usuario.Endereco" />
                         </div>
                     </div>
             </div>
@@ -36,11 +36,11 @@
 
 
 @code {
-    private VendedorDTO vendedor = new VendedorDTO();
+    private UsuarioDTO Usuario = new UsuarioDTO();
 
     private async Task ValidacaoVend()
     {
-        var vend1 = await Http.PostAsJsonAsync("/Vendedor/CVendedor", vendedor); //manda para o controller criar uma Vendedor por um  Json Async
-        NavigationManager.NavigateTo("TS/Vendedor/ListarVendedor"); // Navega até o endereco forçando o navegador a dar reload
+        var vend1 = await Http.PostAsJsonAsync("/Usuario/CUsuario", Usuario); //manda para o controller criar uma Usuario por um  Json Async
+        NavigationManager.NavigateTo("TS/Usuario/ListarUsuario"); // Navega até o endereco forçando o navegador a dar reload
     }
 }

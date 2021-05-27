@@ -6,14 +6,14 @@ using System.Text;
 
 namespace ProjetoTS.Shared
 {
-    public class DetalheProduto
+    public class DetalheAutomovel
     {
         public string Descricao { get; set; }
         public string TempoDeUso { get; set; }
         public string EstadodeConservacao { get; set; }
 
 
-        public int IdProduto { get; set; }
-        public Produto Produto { get; set; }
+        public int IdAutomovel { get; set; }
+        public Automovel Automovel { get; set; }
     }
 }

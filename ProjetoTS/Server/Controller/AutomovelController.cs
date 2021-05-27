@@ -12,36 +12,36 @@ namespace ProjetoTS.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProdutoController : Controller
+    public class AutomovelController : Controller
     {
         private readonly ApplicationDBContext db;
 
-        public ProdutoController(ApplicationDBContext db)//injeção de dependencia
+        public AutomovelController(ApplicationDBContext db)//injeção de dependencia
         {
             this.db = db;
         }
 
         [HttpPost]
         [Route("Criar")]
-        public async Task<ActionResult> Post([FromBody] ProdutoDTO produto)//recebe um produto do body do Http e não do header
+        public async Task<ActionResult> Post([FromBody] AutomovelDTO Automovel)//recebe um Automovel do body do Http e não do header
         {
             
             try
             {
 
-                var newProduto = new Produto
+                var newAutomovel = new Automovel
                 {
 
-                    Id = produto.Id,
-                    Nome = produto.Nome,
-                    Preco = produto.Preco,
-                    TagProduto = produto.TagProduto,
-                    DetalheProduto=produto.DetalheProduto,
-                    Vendedor=produto.Vendedor,
-                    IdVendedor = Convert.ToInt32(produto.IdVendedor)
+                    Id = Automovel.Id,
+                    Nome = Automovel.Nome,
+                    Preco = Automovel.Preco,
+                    TagAutomovel = Automovel.TagAutomovel,
+                    DetalheAutomovel=Automovel.DetalheAutomovel,
+                    Usuario=Automovel.Usuario,
+                    IdUsuario = Convert.ToInt32(Automovel.IdUsuario)
                   
                 };
-                db.Add(newProduto);
+                db.Add(newAutomovel);
                 await db.SaveChangesAsync();//insere na tabela
                 return Ok();
 
@@ -56,27 +56,27 @@ namespace ProjetoTS.Server.Controllers
         [Route("Listar")]
         public async Task<IActionResult> Get() //o tipo de retorno dessa ação
         {
-            var produtos = await db.Produtos.ToListAsync();//resulta em uma Lista de Produtos
-            return Ok(produtos);
+            var Automovels = await db.Automovels.ToListAsync();//resulta em uma Lista de Automovels
+            return Ok(Automovels);
         }
 
         [HttpGet]
-        [Route("PegaId")] //pega um produto pelo id
-        public async Task<Produto> Get([FromQuery] string id)
+        [Route("PegaId")] //pega um Automovel pelo id
+        public async Task<Automovel> Get([FromQuery] string id)
         {
-            var produto = await db.Produtos.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
-            return produto;
+            var Automovel = await db.Automovels.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
+            return Automovel;
         }
 
         [HttpPut]
         [Route("Atualizar")]
-        public async Task<IActionResult> Put([FromBody] Produto produto) 
+        public async Task<IActionResult> Put([FromBody] Automovel Automovel) 
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            db.Entry(produto).State = EntityState.Modified;
+            db.Entry(Automovel).State = EntityState.Modified;
             try
             {
                 await db.SaveChangesAsync();
@@ -90,20 +90,20 @@ namespace ProjetoTS.Server.Controllers
 
         [HttpDelete]
         [Route("Deletar/{id}")]
-        public async Task<ActionResult<Produto>> Delete(int id)
+        public async Task<ActionResult<Automovel>> Delete(int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var produto = await db.Produtos.FindAsync(id);
-            if (produto == null)
+            var Automovel = await db.Automovels.FindAsync(id);
+            if (Automovel == null)
             {
                 return NotFound();
             }
-            db.Produtos.Remove(produto);
+            db.Automovels.Remove(Automovel);
             await db.SaveChangesAsync();
-            return Ok(produto);
+            return Ok(Automovel);
         }
     }
 }
