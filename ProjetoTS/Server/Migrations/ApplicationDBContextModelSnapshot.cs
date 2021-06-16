@@ -97,10 +97,22 @@ namespace ProjetoTS.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Cpf")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DatadeNasc")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Endereco")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Nome")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("email")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("telefone")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("IdUsuario");
@@ -126,7 +138,7 @@ namespace ProjetoTS.Server.Migrations
 
             modelBuilder.Entity("ProjetoTS.Shared.TagAutomovel", b =>
                 {
-                    b.HasOne("ProjetoTS.Shared.Automovel", "Automovel")
+                    b.HasOne("ProjetoTS.Shared.Automovel", "automovel")
                         .WithMany("TagAutomovel")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)

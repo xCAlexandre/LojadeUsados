@@ -37,29 +37,22 @@
                                         </div>
                                         <div class="col-6">
                                             <label for="Name" class="form-label">Name</label>
-                                            <input type="text" id="Name" class="form-control"
-                                                placeholder="" aria-label="Name" required>
+                                            <h3>@usuario.Nome</h3>
 
                                             <label for="Address" class="form-label">Address</label>
-                                            <input type="text" id="Address" class="form-control"
-                                                placeholder="" aria-label="Address" required>
+                                            <h3>@usuario.Endereco</h3>
 
                                             <label for="CPF" class="form-label">CPF</label>
-                                            <input type="text" id="CPF" class="form-control"
-                                                placeholder="" aria-label="CPF" required>
+                                            <h3>@usuario.Cpf</h3>
 
                                             <label for="birthday" class="form-label">birthday</label>
-                                            <input type="text" id="birthday" class="form-control"
-                                                placeholder="" aria-label="birthday" required>
+                                            <h3>@usuario.DatadeNasc</h3>
 
                                             <label for="E-mail" class="form-label">E-mail</label>
-                                            <input type="text" id="E-mail" class="form-control"
-                                                placeholder="" aria-label="E-mail" required>
+                                            <h3>@usuario.email</h3>
                                             
                                             <label for="Phone number" class="form-label">Phone number</label>
-                                            <input type="text" id="Phone number" class="form-control"
-                                                placeholder="" aria-label="Phone number" required>
-
+                                            <h3>@usuario.telefone</h3>
                                         </div>
                                     </div>      
                                 </form>
@@ -73,4 +66,14 @@
         </div>
     </div>
 </div>
+@code{
+    Usuario usuario = new Usuario();
+    protected override async Task OnInitializedAsync()
+    {
+    Console.WriteLine("teste2");
+    usuario = await Http.GetFromJsonAsync<Usuario>($"/Usuario/GetById?id={1}");
+    Console.WriteLine(usuario.Nome);
+    }
+    
 
+} 

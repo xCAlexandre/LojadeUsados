@@ -32,6 +32,10 @@ namespace ProjetoTS.Server.Controllers
                     IdUsuario=Convert.ToInt32(Usuario.IdUsuario),
                     Nome=Usuario.Nome,
                     Endereco=Usuario.Endereco,
+                    Cpf = Usuario.Cpf,
+                    DatadeNasc = Usuario.DatadeNasc,
+                    telefone = Usuario.telefone,
+                    email = Usuario.email,
                     Automovel=Usuario.Automovel
                 };
                 db.Add(newUsuario);
@@ -52,6 +56,14 @@ namespace ProjetoTS.Server.Controllers
         {
             var Usuarios = await db.Usuarios.ToListAsync();//resulta em uma Lista de Automovels
             return Ok(Usuarios);
+        }
+
+        [HttpGet]
+        [Route("GetById")] //pega um Usuario pelo id
+        public async Task<Usuario> Get([FromQuery] string id)
+        {
+            var Usuario = await db.Usuarios.SingleOrDefaultAsync(x => x.IdUsuario == Convert.ToInt32(id));
+            return Usuario;
         }
         
     }
