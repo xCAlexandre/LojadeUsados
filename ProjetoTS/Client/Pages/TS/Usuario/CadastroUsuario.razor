@@ -57,6 +57,6 @@
     private async Task ValidacaoVend()
     {
         var vend1 = await Http.PostAsJsonAsync("/Usuario/CUsuario", Usuario); //manda para o controller criar uma Usuario por um  Json Async
-        NavigationManager.NavigateTo("TS/Usuario/ListarUsuario"); // Navega até o endereco forçando o navegador a dar reload
+        NavigationManager.NavigateTo("TS/Perfil/Perfil"); // Navega até o endereco forçando o navegador a dar reload
     }
 }
