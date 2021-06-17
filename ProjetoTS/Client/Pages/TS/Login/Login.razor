@@ -1,0 +1,50 @@
+@page "/TS/Login/Login"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+<style>
+    .login-page{
+    width: 300px;
+    margin: auto;
+    };
+</style>
+<div style="font-family: Arial, Helvetica, sans-serif;display: grid;justify-items: center;align-items: center;background-color: #e5e4e2;width: 700px;height: 500px;border-radius: 15px;border-color: black;" class="login-page">
+    <div class="form">
+        <div class="login">
+            <div style="text-align: center; color: #006400;" class="login-header">
+            <h3>LOGIN</h3>
+            <p style="color: black;">Insira seus dados para login.</p>
+            </div>
+        </div>
+        @* <hr size="100"> *@
+        <form style="justify-items: center;align-items: center;" class="login-form">
+            <div style="margin-left: 18px;">
+                <input style="border-radius: 4px;border: none;" type="text" placeholder="Usuário"/>
+            </div>
+            <p></p>
+            <div style="margin-left: 18px;">
+                <input style="border-radius: 4px;border: none;" type="password" placeholder="Senha"/>
+            </div>
+            <p></p>
+            <div>
+                <button style="margin-left: 65px;background-color: #006400;border: none;border-radius: 4px;color: white;width: 110px;height: 27px ;text-align: center" >Login</button>
+            </div>
+            <p></p>
+            <p class="message">Não tem uma conta? <a href="/CadastroUsuario/CadastroUsuario">Cadastre-se</a></p>
+        </form>
+    </div>
+</div>
+
+@code {
+    private List<Usuario> UsuarioList = new List<Usuario>();//Criar lista de Usuarios
+
+    protected override async Task OnInitializedAsync()
+    {
+        var vend1 = await Http.GetFromJsonAsync<List<Usuario>>("/Usuario/ListUsuarios");//Rota para o controller ir e trazer uma lista das Usuarios
+        foreach (var item in vend1)
+        {
+            UsuarioList.Add(item);//adiciona cada item na TagList
+
+        }
+    }
+}
